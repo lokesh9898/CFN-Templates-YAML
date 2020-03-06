@@ -1,0 +1,135 @@
+Parameters:
+  InstanceTypeParameter:
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - a1.2xlarge
+      - a1.4xlarge
+      - a1.large
+      - a1.medium
+      - a1.xlarge
+      - c1.medium
+      - c1.xlarge
+      - c3.2xlarge
+      - c3.4xlarge
+      - c3.8xlarge
+      - c3.large
+      - c3.xlarge
+      - c4.2xlarge
+      - t2.micro
+      - t2.small
+      - t2.medium
+      - t2.large
+      - r4.large
+      - t2.xlarge
+      - r5.large
+    Description: Enter the Instance Type of the Server
+  ImageIdParameter:
+    Type: AWS::EC2::ImageId
+    Default: ami-0b898040803850657 | (AmazonLinux)
+    AllowedValues:
+      - ami-035b3c7efe6d061d5(AmazonLinux1)
+      - ami-0c322300a1dd5dc79(Redhat8)
+      - ami-0b5372ab3202bd20b(SUSELinux)
+      - ami-07d0cf3af28718ef8(Ubuntu18.04)
+      - ami-0cfee17793b08a293(Ubuntu16.04)
+      - ami-04ca2d0801450d495(Windows2019)
+      - ami-013e2b5127d181b0c(Windows2016)
+      - ami-02666d31e797d5190(Windwos2012)
+      - ami-0daee40e15682f8fa(Windows2012-R2)
+      - ami-0be3b7126b85e11dc(Windows2008-R2)
+  AvailabilityZoneParameter:
+    Type: AWS::EC2::AvailabilityZone
+    Default: us-east-1a
+    AllowedValues:
+      - us-east-1a
+      - us-east-1b
+      - us-east-1c
+      - us-east-1d
+      - us-east-1e
+      - us-east-1f
+  ShutDownBehavior:
+    Type: String
+    Default: stop
+    AllowedValues:
+      - stop
+      - terminate
+  Keynames:
+    Type: AWS::EC2::KeyName
+    Default: P@$$w0rd
+    AllowedValues:
+      - P@$$w0rd
+      - AWS-TestKeyPair
+  myENI:
+    Type: AWS::EC2::NetworkInterface
+    Properties:
+    Tags:
+     - Key: MyENI
+       Value: TestingENI
+    Description: A nice description.
+    SourceDestCheck: 'false'
+    GroupSet:
+    - sg-005db00c75626acc9
+  Vpc:
+    Type: AWS::EC2:VPC
+  Subnet:
+    Type: AWS::
+    Default: subnet-1b1a4d7c
+    AllowedValues:
+      - subnet-d9742485
+      - subnet-1b1a4d7c
+      - subnet-964012b8
+      - subnet-27eb0c6a
+      - subnet-ec49d2d2
+      - subnet-85727b8a
+  InstanceSecurityGroup:
+  Type: AWS::EC2::SecurityGroup
+  Properties:
+      GroupDescription: Allow SSH to client host
+      VpcId:
+         Ref: myVPC
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 22
+        ToPort: 22
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 0
+        ToPort: 65535
+        CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 22
+        ToPort: 22
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 0
+        ToPort: 65535
+        CidrIp: 0.0.0.0/0
+My_test_Instance:
+  Type: AWS::EC2:Instance
+  Description: "Create a new EC2 Instance"
+  Properties:
+    ImageId:
+      Ref: ImageIdParameter
+    InstanceType:
+      Ref: InstanceTypeParameter
+    AvailabilityZone:
+      Ref: AvailabilityZoneParameter
+    InstanceInitiatedShutdownBehavior:
+      Ref: ShutDownBehavior
+    KeyName:
+      Ref: Keynames
+    NetworkInterfaces:
+      NetworkinterfaceId:
+        - Ref: myENI
+    SecurityGroupIds:
+      Ref: InstanceSecurityGroup
